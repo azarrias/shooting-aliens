@@ -34,7 +34,7 @@ function love.load()
 
   -- fixture that attaches a shape to our body
   boxFixture = love.physics.newFixture(boxBody, boxShape)
-  boxFixture:setRestitution(0.5) -- defines "bounciness"
+  boxFixture:setRestitution(0.3) -- defines "bounciness"
   
   -- static ground body
   groundBody = love.physics.newBody(world, 0, VIRTUAL_SIZE.y - 30, 'static')
@@ -44,6 +44,21 @@ function love.load()
   
   -- affix edge shape to our body
   groundFixture = love.physics.newFixture(groundBody, edgeShape)
+  
+  -- table holding kinematic objects
+  kinematicBodies = {}
+  kinematicFixtures = {}
+  kinematicShape = love.physics.newRectangleShape(20, 20)
+  
+  NUM_KINEMATIC_BODIES = 5
+  for i = 1, NUM_KINEMATIC_BODIES do
+    table.insert(kinematicBodies, love.physics.newBody(world, 
+        VIRTUAL_SIZE.x / 2 + (30 * (i - 1 - (NUM_KINEMATIC_BODIES - 1) / 2)), VIRTUAL_SIZE.y / 2 + 45, 'kinematic'))
+    table.insert(kinematicFixtures, love.physics.newFixture(kinematicBodies[i], kinematicShape))
+    
+    -- spin kinematic body indefinitely
+    kinematicBodies[i]:setAngularVelocity(DegreesToRadians(360))
+  end
   
   love.keyboard.keysPressed = {}
 end
@@ -82,6 +97,13 @@ function love.draw()
   love.graphics.setColor(1, 0, 0, 1)
   love.graphics.setLineWidth(2)
   love.graphics.line(groundBody:getWorldPoints(edgeShape:getPoints()))
+  
+  -- draw all our kinematic bodies
+  love.graphics.setColor(0, 0, 1, 1)
+
+  for i = 1, NUM_KINEMATIC_BODIES do
+    love.graphics.polygon('fill', kinematicBodies[i]:getWorldPoints(kinematicShape:getPoints()))
+  end
   
   push:finish()
 end

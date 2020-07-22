@@ -3,6 +3,9 @@ Class = require 'libs.class'
 push = require 'libs.push'
 tiny = require 'libs.tiny'
 
+-- general purpose / utility
+require 'util'
+
 --[[
     constants
   ]]
