@@ -3,16 +3,25 @@
    tiny package that provides very simple game engine features, such as:
    Colliders, animations, sprites, state machines, vectors, etc.
    Implemented using the ECS pattern
-   Depends on the class module, from the HUMP package by Matthias Richter
+   Depends on the class module, from the HUMP package 
+   Copyright (c) 2010-2018 Matthias Richter
+   Could easily be modified to use a different class module, if needed
   ]]
+  
+-- Check that Class is defined and available, since this package uses OOP everywhere
+if not Class then
+  error("Could not find a valid 'Class' object.\nPlease make sure to require a Class module before the tiny package.")
+end
 
 local current_folder = (...):gsub('%.init$', '') -- "my package path"
 
 local animation = require(current_folder .. '.Animation')
 local animation_frame = require(current_folder .. '.AnimationFrame')
+local animator_condition_operator_type = require(current_folder .. '.AnimatorConditionOperatorType')
 local animator_condition = require(current_folder .. '.AnimatorCondition')
 local animator_controller = require(current_folder .. '.AnimatorController')
 local animator_controller_parameter = require(current_folder .. '.AnimatorControllerParameter')
+local animator_controller_parameter_type = require(current_folder .. '.AnimatorControllerParameterType')
 local animator_state = require(current_folder .. '.AnimatorState')
 local animator_state_machine = require(current_folder .. '.AnimatorStateMachine')
 local animator_state_transition = require(current_folder .. '.AnimatorStateTransition')
@@ -28,9 +37,11 @@ local vector2d = require(current_folder .. '.Vector2D')
 local tiny = {
   Animation = animation,
   AnimationFrame = animation_frame,
+  AnimatorConditionOperatorType = animator_condition_operator_type,
   AnimatorCondition = animator_condition,
   AnimatorController = animator_controller,
   AnimatorControllerParameter = animator_controller_parameter,
+  AnimatorControllerParameterType = animator_controller_parameter_type,
   AnimatorState = animator_state,
   AnimatorStateMachine = animator_state_machine,
   AnimatorStateTransition = animator_state_transition,
