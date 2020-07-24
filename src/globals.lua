@@ -4,6 +4,7 @@ push = require 'libs.push'
 tiny = require 'libs.tiny'
 
 -- general purpose / utility
+require 'SceneStart'
 require 'util'
 
 --[[
@@ -19,3 +20,15 @@ WEB_OS = (love._version_major > 0 or love._version_minor >= 9) and love.system.g
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1280, 720)
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
+
+-- resources
+TEXTURES = {
+  ['colored-land'] = love.graphics.newImage('graphics/colored_land.png'), 
+  ['blue-desert'] = love.graphics.newImage('graphics/blue_desert.png'), 
+  ['blue-grass'] = love.graphics.newImage('graphics/blue_grass.png'), 
+  ['blue-land'] = love.graphics.newImage('graphics/blue_land.png'), 
+  ['blue-shroom'] = love.graphics.newImage('graphics/blue_shroom.png'), 
+  ['colored-desert'] = love.graphics.newImage('graphics/colored_desert.png'), 
+  ['colored-grass'] = love.graphics.newImage('graphics/colored_grass.png'), 
+  ['colored-shroom'] = love.graphics.newImage('graphics/colored_shroom.png')
+}
