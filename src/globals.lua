@@ -23,6 +23,13 @@ WINDOW_SIZE = tiny.Vector2D(1280, 720)
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
 
 -- resources
+FONTS = {
+  ['small'] = love.graphics.newFont('fonts/font.ttf', 8),
+  ['medium'] = love.graphics.newFont('fonts/font.ttf', 16),
+  ['large'] = love.graphics.newFont('fonts/font.ttf', 32),
+  ['huge'] = love.graphics.newFont('fonts/font.ttf', 64)
+}
+
 TEXTURES = {
   ['aliens'] = love.graphics.newImage('graphics/aliens.png'), 
   ['blue-desert'] = love.graphics.newImage('graphics/blue_desert.png'), 
