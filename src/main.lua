@@ -23,13 +23,15 @@ function love.load()
   })
   love.window.setTitle(GAME_TITLE)
 
-  scenes = {
-    ['Start'] = function() return SceneStart() end
+  local scenes = {
+    ['Start'] = function() return SceneStart() end,
+    ['Play'] = function() return ScenePlay() end
   }
   sceneManager = tiny.SceneManager(scenes)
   sceneManager:change('Start')  
 
   love.keyboard.keysPressed = {}
+  love.mouse.buttonPressed = {}
 end
 
 function love.update(dt)
@@ -41,6 +43,7 @@ function love.update(dt)
   sceneManager:update(dt)
   
   love.keyboard.keysPressed = {}
+  love.mouse.buttonPressed = {}
 end
 
 function love.resize(w, h)
@@ -51,6 +54,10 @@ end
 -- Does not account for keys being held down
 function love.keypressed(key)
   love.keyboard.keysPressed[key] = true
+end
+
+function love.mousepressed(x, y, button)
+  love.mouse.buttonPressed[button] = true
 end
 
 function love.draw()

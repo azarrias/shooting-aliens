@@ -2,16 +2,7 @@ SceneStart = Class{__includes = tiny.Scene}
 
 function SceneStart:init()
   -- background
-  local BACKGROUND_TYPES = {
-    'colored-land', 'blue-desert', 'blue-grass', 'blue-land', 
-    'blue-shroom', 'colored-desert', 'colored-grass', 'colored-shroom'
-  }
-  local background = BACKGROUND_TYPES[math.random(#BACKGROUND_TYPES)]
-  local texture = TEXTURES[background]
-  local sprite = tiny.Sprite(texture)
-  self.backgroundGameObject = tiny.Entity(VIRTUAL_SIZE.x / 2, VIRTUAL_SIZE.y / 2, 0, 
-    VIRTUAL_SIZE.x / texture:getWidth(), VIRTUAL_SIZE.y / texture:getHeight())
-  self.backgroundGameObject:AddComponent(sprite)
+  self.background = Background()
   
   -- physics world
   self.world = love.physics.newWorld(0, 300)
@@ -47,10 +38,15 @@ function SceneStart:update(dt)
   for i = 1, #self.aliens do
     self.aliens[i]:update(dt)
   end
+  
+  -- handle input
+  if love.mouse.buttonPressed[1] then
+    sceneManager:change('Play')
+  end
 end
 
 function SceneStart:render()
-  self.backgroundGameObject:render()
+  self.background.gameObject:render()
   for k, alien in pairs(self.aliens) do
     alien:render()
   end

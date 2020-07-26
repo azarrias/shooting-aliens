@@ -5,6 +5,9 @@ tiny = require 'libs.tiny'
 
 -- general purpose / utility
 require 'Alien'
+require 'Background'
+require 'Level'
+require 'ScenePlay'
 require 'SceneStart'
 require 'util'
 
