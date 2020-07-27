@@ -8,6 +8,7 @@ require 'Alien'
 require 'Background'
 require 'Level'
 require 'Obstacle'
+require 'Player'
 require 'ScenePlay'
 require 'SceneStart'
 require 'util'
@@ -26,6 +27,7 @@ WEB_OS = (love._version_major > 0 or love._version_minor >= 9) and love.system.g
 WINDOW_SIZE = tiny.Vector2D(1280, 720)
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
 ALIEN_SQUARE_SIZE = 35
+ALIEN_ROUND_RADIUS = 17.5
 TILE_SIZE = 35
 
 -- resources
@@ -51,7 +53,7 @@ TEXTURES = {
 }
 
 QUADS = {
-  ['aliens'] = GenerateQuads(TEXTURES['aliens'], 1, 5, tiny.Vector2D(35, 35)),
+  ['aliens'] = GenerateQuads(TEXTURES['aliens'], 3, 5, tiny.Vector2D(35, 35)),
   ['tiles'] = GenerateAllQuads(TEXTURES['tiles'], TILE_SIZE, TILE_SIZE),
   ['wood-horizontal-damaged'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(110, 35))[1],
   ['wood-horizontal-intact'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(110, 35), tiny.Vector2D(0, 35))[1],

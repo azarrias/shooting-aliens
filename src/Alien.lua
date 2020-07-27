@@ -1,6 +1,6 @@
 Alien = Class{}
 
-function Alien:init(world, x, y)
+function Alien:init(world, shape, x, y)
   self.world = world
   
   local posX = x or math.random(VIRTUAL_SIZE.x)
@@ -8,8 +8,17 @@ function Alien:init(world, x, y)
   self.body = love.physics.newBody(self.world, posX, posY, 'dynamic')
   self.gameObject = tiny.Entity(posX, posY)
   
-  self.shape = love.physics.newRectangleShape(ALIEN_SQUARE_SIZE, ALIEN_SQUARE_SIZE)
-  local sprite = tiny.Sprite(TEXTURES['aliens'], QUADS['aliens'][math.random(5)])
+  shape = shape or 'square'
+  local quad
+  if shape == 'square' then
+    self.shape = love.physics.newRectangleShape(ALIEN_SQUARE_SIZE, ALIEN_SQUARE_SIZE)
+    quad = math.random(5)
+  elseif shape == 'round' then
+    self.shape = love.physics.newCircleShape(ALIEN_ROUND_RADIUS)
+    quad = 9
+  end
+  
+  local sprite = tiny.Sprite(TEXTURES['aliens'], QUADS['aliens'][quad])
   self.gameObject:AddComponent(sprite)
   
   self.fixture = love.physics.newFixture(self.body, self.shape)
