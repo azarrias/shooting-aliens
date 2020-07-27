@@ -11,6 +11,9 @@ function Player:init(alien)
 end
 
 function Player:update(dt)
+  if self.aiming then
+    self.alien.body:setPosition(self.draggingPosition.x, self.draggingPosition.y)
+  end
   self.alien:update(dt)
 end
 
