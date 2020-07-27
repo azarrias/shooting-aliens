@@ -52,4 +52,13 @@ function Level:render()
   
   -- player
   self.player:render()
+  
+  -- render instruction text if the alien has not been launched
+  if not self.player.launched then
+    love.graphics.setFont(FONTS['large'])
+    love.graphics.setColor(75 / 255, 75 / 255, 75 / 255, 1)
+    love.graphics.printf('Click and drag\ncircular alien to shoot!',
+      0, 64, VIRTUAL_SIZE.x, 'center')
+    love.graphics.setColor(1, 1, 1, 1)
+  end
 end

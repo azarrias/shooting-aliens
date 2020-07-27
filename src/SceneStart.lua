@@ -28,7 +28,7 @@ function SceneStart:init()
   -- menu title
   self.text = {
     { string = GAME_TITLE, font = FONTS['huge'], color = { 200 / 255, 200 / 255, 200 / 255, 1 }, shadow = true },
-    { string = '\nClick to start!', font = FONTS['medium'], color = { 200 / 255, 200 / 255, 200 / 255, 1 }, shadow = true }
+    { string = '\nClick to start!', font = FONTS['large'], color = { 200 / 255, 200 / 255, 200 / 255, 1 }, shadow = true }
   }
 end
 
@@ -52,7 +52,7 @@ function SceneStart:render()
   end
   
   love.graphics.setColor(64 / 255, 64 / 255, 64 / 255, 200 / 255)
-  love.graphics.rectangle('fill', VIRTUAL_SIZE.x / 2 - 270, VIRTUAL_SIZE.y / 2 - 45,
-    530, 108, 3)
+  love.graphics.rectangle('fill', VIRTUAL_SIZE.x / 2 - 270, VIRTUAL_SIZE.y / 2 - 48,
+    530, 128, 3)
   RenderCenteredText(self.text)
 end

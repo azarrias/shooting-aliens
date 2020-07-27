@@ -16,7 +16,7 @@ function Obstacle:init(world, orientation, x, y)
     self.height = 110
   end
   
-  self.shape = love.physics.newRectangleShape(ALIEN_SQUARE_SIZE, ALIEN_SQUARE_SIZE)
+  self.shape = love.physics.newRectangleShape(self.width, self.height)
   local quad = 'wood-'..orientation..'-intact'
   local sprite = tiny.Sprite(TEXTURES['wood'], QUADS[quad])
   self.gameObject:AddComponent(sprite)
