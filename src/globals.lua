@@ -7,6 +7,7 @@ tiny = require 'libs.tiny'
 require 'Alien'
 require 'Background'
 require 'Level'
+require 'Obstacle'
 require 'ScenePlay'
 require 'SceneStart'
 require 'util'
@@ -46,9 +47,14 @@ TEXTURES = {
   ['colored-land'] = love.graphics.newImage('graphics/colored_land.png'), 
   ['colored-shroom'] = love.graphics.newImage('graphics/colored_shroom.png'),
   ['tiles'] = love.graphics.newImage('graphics/tiles.png'),
+  ['wood'] = love.graphics.newImage('graphics/wood.png')
 }
 
 QUADS = {
   ['aliens'] = GenerateQuads(TEXTURES['aliens'], 1, 5, tiny.Vector2D(35, 35)),
-  ['tiles'] = GenerateAllQuads(TEXTURES['tiles'], TILE_SIZE, TILE_SIZE)
+  ['tiles'] = GenerateAllQuads(TEXTURES['tiles'], TILE_SIZE, TILE_SIZE),
+  ['wood-horizontal-damaged'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(110, 35))[1],
+  ['wood-horizontal-intact'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(110, 35), tiny.Vector2D(0, 35))[1],
+  ['wood-vertical-damaged'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(35, 110), tiny.Vector2D(320, 180))[1],
+  ['wood-vertical-intact'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(35, 110), tiny.Vector2D(355, 355))[1]
 }
