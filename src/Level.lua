@@ -50,6 +50,32 @@ function Level:render()
     obstacle:render()
   end
   
+  -- draw trajectory preview when the player is aiming before the shot
+  if not self.player.launched and self.player.aiming then
+    local linearVelocityX = (self.player.initialPosition.x - self.player.draggingPosition.x) * 10
+    local linearVelocityY = (self.player.initialPosition.y - self.player.draggingPosition.y) * 10
+    
+    local trajectoryX, trajectoryY = self.player.draggingPosition.x, self.player.draggingPosition.y
+    local gravityX, gravityY = self.world.getGravity(self.world)
+    
+    -- http://www.iforce2d.net/b2dtut/projected-trajectory
+    for i = 1, 90 do
+        
+      -- magenta color that starts off slightly transparent
+      love.graphics.setColor(1, 80 / 255, 1, (1 / 12) * i)
+        
+      -- trajectory X and Y for this iteration of the simulation
+      trajectoryX = self.player.draggingPosition.x + i * 1/60 * linearVelocityX
+      trajectoryY = self.player.draggingPosition.y + i * 1/60 * linearVelocityY + 
+        0.5 * (i * i + i) * gravityY * 1/60 * 1/60
+
+      -- render every fifth calculation as a circle
+      if i % 5 == 0 then
+        love.graphics.circle('fill', trajectoryX, trajectoryY, 3)
+      end
+    end
+  end
+  
   -- player
   self.player:render()
   
