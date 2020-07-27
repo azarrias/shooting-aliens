@@ -5,7 +5,7 @@ function Level:init()
   self.world = love.physics.newWorld(0, 300)
   
   -- ground
-  self.groundBody = love.physics.newBody(self.world, -VIRTUAL_SIZE.x, VIRTUAL_SIZE.y - TILE_SIZE, 'static')
+  self.groundBody = love.physics.newBody(self.world, 0, VIRTUAL_SIZE.y - TILE_SIZE, 'static')
   self.edgeShape = love.physics.newEdgeShape(0, 0, VIRTUAL_SIZE.x, 0)
   self.groundFixture = love.physics.newFixture(self.groundBody, self.edgeShape)
   self.groundFixture:setFriction(0.5)
@@ -29,6 +29,7 @@ end
 
 function Level:update(dt)
   self.world:update(dt)
+  self.player:update(dt)
 end
 
 function Level:render()

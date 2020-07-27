@@ -32,6 +32,7 @@ function love.load()
 
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
+  love.mouse.buttonReleased = {}
 end
 
 function love.update(dt)
@@ -44,6 +45,7 @@ function love.update(dt)
   
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
+  love.mouse.buttonReleased = {}
 end
 
 function love.resize(w, h)
@@ -58,6 +60,10 @@ end
 
 function love.mousepressed(x, y, button)
   love.mouse.buttonPressed[button] = true
+end
+
+function love.mousereleased(x, y, button)
+  love.mouse.buttonReleased[button] = true
 end
 
 function love.draw()

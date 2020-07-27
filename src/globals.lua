@@ -60,3 +60,6 @@ QUADS = {
   ['wood-vertical-damaged'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(35, 110), tiny.Vector2D(320, 180))[1],
   ['wood-vertical-intact'] = GenerateQuads(TEXTURES['wood'], 1, 1, tiny.Vector2D(35, 110), tiny.Vector2D(355, 355))[1]
 }
+
+-- tweak circular alien quad to avoid rendering artifacts
+QUADS['aliens'][9]:setViewport(105.5, 35.5, 35, 34.2)
