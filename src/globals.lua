@@ -24,6 +24,8 @@ WEB_OS = (love._version_major > 0 or love._version_minor >= 9) and love.system.g
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1280, 720)
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
+ALIEN_SQUARE_SIZE = 35
+TILE_SIZE = 35
 
 -- resources
 FONTS = {
@@ -42,9 +44,11 @@ TEXTURES = {
   ['colored-desert'] = love.graphics.newImage('graphics/colored_desert.png'), 
   ['colored-grass'] = love.graphics.newImage('graphics/colored_grass.png'), 
   ['colored-land'] = love.graphics.newImage('graphics/colored_land.png'), 
-  ['colored-shroom'] = love.graphics.newImage('graphics/colored_shroom.png')
+  ['colored-shroom'] = love.graphics.newImage('graphics/colored_shroom.png'),
+  ['tiles'] = love.graphics.newImage('graphics/tiles.png'),
 }
 
 QUADS = {
-  ['aliens'] = GenerateQuads(TEXTURES['aliens'], 1, 5, tiny.Vector2D(35, 35))
+  ['aliens'] = GenerateQuads(TEXTURES['aliens'], 1, 5, tiny.Vector2D(35, 35)),
+  ['tiles'] = GenerateAllQuads(TEXTURES['tiles'], TILE_SIZE, TILE_SIZE)
 }
