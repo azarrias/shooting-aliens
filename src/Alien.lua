@@ -1,6 +1,6 @@
 Alien = Class{}
 
-function Alien:init(world, shape, x, y)
+function Alien:init(world, shape, x, y, userData)
   self.world = world
   
   local posX = x or math.random(VIRTUAL_SIZE.x)
@@ -22,6 +22,7 @@ function Alien:init(world, shape, x, y)
   self.gameObject:AddComponent(sprite)
   
   self.fixture = love.physics.newFixture(self.body, self.shape)
+  self.fixture:setUserData(userData)
 end
 
 function Alien:update(dt)

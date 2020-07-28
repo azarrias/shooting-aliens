@@ -22,6 +22,7 @@ function Obstacle:init(world, orientation, x, y)
   self.gameObject:AddComponent(sprite)
   
   self.fixture = love.physics.newFixture(self.body, self.shape)
+  self.fixture:setUserData('Obstacle')
 end
 
 function Obstacle:update(dt)

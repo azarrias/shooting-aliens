@@ -9,10 +9,11 @@ function Level:init()
   self.edgeShape = love.physics.newEdgeShape(0, 0, VIRTUAL_SIZE.x, 0)
   self.groundFixture = love.physics.newFixture(self.groundBody, self.edgeShape)
   self.groundFixture:setFriction(0.5)
+  self.groundFixture:setUserData('Ground')
   
   -- aliens
   self.aliens = {}
-  table.insert(self.aliens, Alien(self.world, 'square', VIRTUAL_SIZE.x - 80, VIRTUAL_SIZE.y - TILE_SIZE - ALIEN_SQUARE_SIZE / 2))
+  table.insert(self.aliens, Alien(self.world, 'square', VIRTUAL_SIZE.x - 80, VIRTUAL_SIZE.y - TILE_SIZE - ALIEN_SQUARE_SIZE / 2, 'Alien'))
   
   -- obstacles
   self.obstacles = {}
@@ -21,10 +22,37 @@ function Level:init()
   table.insert(self.obstacles, Obstacle(self.world, 'horizontal', VIRTUAL_SIZE.x - 80, VIRTUAL_SIZE.y - 35 - 110 - 35 / 2))
   
   -- player
-  self.player = Player(Alien(self.world, 'round', 90, VIRTUAL_SIZE.y - 100))
+  self.player = Player(Alien(self.world, 'round', 90, VIRTUAL_SIZE.y - 100, 'Player'))
 
   -- background
   self.background = Background()
+  
+  --[[
+      Set functions for collision callbacks during the world update.
+      When called, each function will be passed three arguments. 
+      The first two arguments are the colliding fixtures and the third 
+      argument is the Contact between them. 
+  ]]
+  -- Gets called when two fixtures begin to overlap.
+  function BeginContact(fixtureA, fixtureB, contact)
+    print(fixtureA:getUserData() .. " collided with " .. fixtureB:getUserData())
+  end
+
+  -- Gets called when two fixtures cease to overlap. 
+  -- This will also be called outside of a world update, when colliding 
+  -- objects are destroyed.
+  function EndContact(fixtureA, fixtureB, contact)
+  end
+
+  -- Gets called before a collision gets resolved.
+  function PreSolve(fixtureA, fixtureB, contact)
+  end
+
+  -- Gets called after the collision has been resolved.
+  function PostSolve(fixtureA, fixtureB, contact, normalImpulse, tangentImpulse)
+  end
+
+  self.world:setCallbacks(BeginContact, EndContact, PreSolve, PostSolve)
 end
 
 function Level:update(dt)
@@ -50,7 +78,7 @@ function Level:update(dt)
     if posX < 0 - ALIEN_SQUARE_SIZE or posX > VIRTUAL_SIZE.x + ALIEN_SQUARE_SIZE or 
         (math.abs(velX) + math.abs(velY) < 1.5) then
       self.player.alien.body:destroy()
-      self.player = Player(Alien(self.world, 'round', 90, VIRTUAL_SIZE.y - 100))
+      self.player = Player(Alien(self.world, 'round', 90, VIRTUAL_SIZE.y - 100, 'Player'))
             
       -- re-initialize level if we have no more aliens
       if #self.aliens == 0 then
