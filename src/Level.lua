@@ -73,6 +73,11 @@ function Level:init()
       if sumVel > 20 then
         table.insert(self.destroyedBodies, alien:getBody())
       end
+
+    -- if we hit the ground, play a bounce sound
+    elseif types['Player'] and types['Ground'] then
+      SOUNDS['bounce']:stop()
+      SOUNDS['bounce']:play()
     end
   end
 
@@ -111,6 +116,11 @@ function Level:update(dt)
   for i = #self.obstacles, 1, -1 do
     if self.obstacles[i].body:isDestroyed() then
       table.remove(self.obstacles, i)
+      
+      -- play random wood sound effect
+      local soundNum = math.random(5)
+      SOUNDS['break' .. tostring(soundNum)]:stop()
+      SOUNDS['break' .. tostring(soundNum)]:play()
     end
   end
 
@@ -118,6 +128,8 @@ function Level:update(dt)
   for i = #self.aliens, 1, -1 do
     if self.aliens[i].body:isDestroyed() then
       table.remove(self.aliens, i)
+      SOUNDS['kill']:stop()
+      SOUNDS['kill']:play()
     end
   end
   

@@ -29,6 +29,9 @@ function love.load()
   }
   sceneManager = tiny.SceneManager(scenes)
   sceneManager:change('Start')  
+  
+  SOUNDS['music']:setLooping(true)
+  SOUNDS['music']:play()
 
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}

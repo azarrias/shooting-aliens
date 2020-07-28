@@ -38,6 +38,17 @@ FONTS = {
   ['huge'] = love.graphics.newFont('fonts/font.ttf', 64)
 }
 
+SOUNDS = {
+  ['bounce'] = love.audio.newSource('sounds/bounce.wav', 'static'),
+  ['break1'] = love.audio.newSource('sounds/break1.wav', 'static'),
+  ['break2'] = love.audio.newSource('sounds/break2.wav', 'static'),
+  ['break3'] = love.audio.newSource('sounds/break3.mp3', 'static'),
+  ['break4'] = love.audio.newSource('sounds/break4.wav', 'static'),
+  ['break5'] = love.audio.newSource('sounds/break5.wav', 'static'),
+  ['kill'] = love.audio.newSource('sounds/kill.wav', 'static'),
+  ['music'] = love.audio.newSource('sounds/music.wav', WEB_OS and 'static' or 'stream')
+}
+
 TEXTURES = {
   ['aliens'] = love.graphics.newImage('graphics/aliens.png'), 
   ['blue-desert'] = love.graphics.newImage('graphics/blue_desert.png'), 
