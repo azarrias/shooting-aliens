@@ -4,6 +4,10 @@ function Level:init()
   -- create physics world with 300 units of y gravity
   self.world = love.physics.newWorld(0, 300)
   
+  -- bodies to be destroyed after the world update cycle; destroying these in the
+  -- actual collision callbacks could cause stack overflow and other errors
+  self.destroyedBodies = {}
+  
   -- ground
   self.groundBody = love.physics.newBody(self.world, 0, VIRTUAL_SIZE.y - TILE_SIZE, 'static')
   self.edgeShape = love.physics.newEdgeShape(0, 0, VIRTUAL_SIZE.x, 0)
@@ -35,7 +39,41 @@ function Level:init()
   ]]
   -- Gets called when two fixtures begin to overlap.
   function BeginContact(fixtureA, fixtureB, contact)
-    print(fixtureA:getUserData() .. " collided with " .. fixtureB:getUserData())
+    local types = {}
+    types[fixtureA:getUserData()] = true
+    types[fixtureB:getUserData()] = true
+    
+    -- if obstacle collides with alien, as by debris falling
+    if types['Obstacle'] and types['Alien'] then
+      local obstacle, alien
+      if fixtureA:getUserData() == 'Obstacle' then
+        obstacle, alien = fixtureA, fixtureB
+      else
+        obstacle, alien = fixtureB, fixtureA
+      end
+      
+      -- if the obstacle is fast enough, destroy the alien      
+      local velX, velY = obstacle:getBody():getLinearVelocity()
+      local sumVel = math.abs(velX) + math.abs(velY)
+      if sumVel > 20 then
+        table.insert(self.destroyedBodies, alien:getBody())
+      end
+      
+    elseif types['Player'] and types['Alien'] then
+      local player, alien
+      if fixtureA:getUserData() == 'Player' then
+        player, alien = fixtureA, fixtureB
+      else
+        player, alien = fixtureB, fixtureA
+      end
+      
+      -- if the player is fast enough, destroy the alien
+      local velX, velY = player:getBody():getLinearVelocity()
+      local sumVel = math.abs(velX) + math.abs(velY)
+      if sumVel > 20 then
+        table.insert(self.destroyedBodies, alien:getBody())
+      end
+    end
   end
 
   -- Gets called when two fixtures cease to overlap. 
@@ -58,6 +96,30 @@ end
 function Level:update(dt)
   self.world:update(dt)
   self.player:update(dt)
+  
+  -- destroy all bodies we calculated to destroy during the update call
+  for k, body in pairs(self.destroyedBodies) do
+    if not body:isDestroyed() then 
+      body:destroy()
+    end
+  end
+  
+  -- reset destroyed bodies to empty table for next update phase
+  self.destroyedBodies = {}
+
+  -- remove all destroyed obstacles from level
+  for i = #self.obstacles, 1, -1 do
+    if self.obstacles[i].body:isDestroyed() then
+      table.remove(self.obstacles, i)
+    end
+  end
+
+  -- remove all destroyed aliens from level
+  for i = #self.aliens, 1, -1 do
+    if self.aliens[i].body:isDestroyed() then
+      table.remove(self.aliens, i)
+    end
+  end
   
   -- aliens
   for k, alien in pairs(self.aliens) do
