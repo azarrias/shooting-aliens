@@ -76,8 +76,59 @@ function Level:init()
 
     -- if we hit the ground, play a bounce sound
     elseif types['Player'] and types['Ground'] then
+      local player = fixtureA:getUserData() == 'Player' and fixtureA or fixtureB
+      local velX, velY = player:getBody():getLinearVelocity()
+      local sumVel = math.abs(velX) + math.abs(velY)
+      
       SOUNDS['bounce']:stop()
+      SOUNDS['bounce']:setVolume(math.min(sumVel / 300, 1))
       SOUNDS['bounce']:play()
+      
+    elseif types['Player'] and types['Obstacle'] then
+      local player, obstacle
+      if fixtureA:getUserData() == 'Player' then
+        player, obstacle = fixtureA, fixtureB
+      else
+        player, obstacle = fixtureB, fixtureA
+      end
+      
+      -- if the player is fast enough, replace the obstacle sprite for a damaged one
+      local velX, velY = player:getBody():getLinearVelocity()
+      local sumVel = math.abs(velX) + math.abs(velY)
+      if sumVel > 20 then
+        for k, o in pairs(self.obstacles) do
+          if obstacle:getBody() == o.body then
+            local quad = 'wood-'..o.orientation..'-damaged'
+            sprite = tiny.Sprite(TEXTURES['wood'], QUADS[quad])
+            o.gameObject:AddComponent(sprite)
+            
+            SOUNDS['bounce']:stop()
+            SOUNDS['bounce']:setVolume(math.min(sumVel / 300, 1))
+            SOUNDS['bounce']:play()
+            break
+          end
+        end
+      end
+    
+    elseif fixtureA:getUserData() == 'Obstacle' and fixtureB:getUserData() == 'Obstacle' then
+      -- if obstacles have a rough collision, replace sprites for damaged ones
+      local velXA, velYA = fixtureA:getBody():getLinearVelocity()
+      local velXB, velYB = fixtureB:getBody():getLinearVelocity()
+      local sumVelA = math.abs(velXA) + math.abs(velYA)
+      local sumVelB = math.abs(velXB) + math.abs(velYB)
+      if sumVelA + sumVelB > 20 then
+        for k, o in pairs(self.obstacles) do
+          if o.body == fixtureA:getBody() or o.body == fixtureB:getBody() then
+            local quad = 'wood-'..o.orientation..'-damaged'
+            sprite = tiny.Sprite(TEXTURES['wood'], QUADS[quad])
+            o.gameObject:AddComponent(sprite)
+            
+            SOUNDS['bounce']:stop()
+            SOUNDS['bounce']:setVolume(math.min((sumVelA + sumVelB)/ 300, 1))
+            SOUNDS['bounce']:play()
+          end
+        end
+      end
     end
   end
 

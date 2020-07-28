@@ -7,6 +7,7 @@ function Obstacle:init(world, orientation, x, y)
   local posY = y
   self.body = love.physics.newBody(self.world, posX, posY, 'dynamic')
   self.gameObject = tiny.Entity(posX, posY)
+  self.orientation = orientation
   
   if orientation == 'horizontal' then
     self.width = 110
