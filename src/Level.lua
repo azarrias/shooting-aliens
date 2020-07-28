@@ -30,6 +30,34 @@ end
 function Level:update(dt)
   self.world:update(dt)
   self.player:update(dt)
+  
+  -- aliens
+  for k, alien in pairs(self.aliens) do
+    alien:update(dt)
+  end
+  
+  -- obstacles
+  for k, obstacle in pairs(self.obstacles) do
+    obstacle:update(dt)
+  end  
+  
+  -- respawn player if original body stopped moving, or if went through the left side of the screen
+  if self.player.launched then
+    local posX, posY = self.player.alien.body:getPosition()
+    local velX, velY = self.player.alien.body:getLinearVelocity()
+        
+    -- if we fired our alien to the left or it's almost done rolling, respawn
+    if posX < 0 - ALIEN_SQUARE_SIZE or posX > VIRTUAL_SIZE.x + ALIEN_SQUARE_SIZE or 
+        (math.abs(velX) + math.abs(velY) < 1.5) then
+      self.player.alien.body:destroy()
+      self.player = Player(Alien(self.world, 'round', 90, VIRTUAL_SIZE.y - 100))
+            
+      -- re-initialize level if we have no more aliens
+      if #self.aliens == 0 then
+        sceneManager:change('Start')
+      end
+    end
+  end
 end
 
 function Level:render()
@@ -75,6 +103,8 @@ function Level:render()
       end
     end
   end
+  
+  love.graphics.setColor(1, 1, 1, 1)
   
   -- player
   self.player:render()
